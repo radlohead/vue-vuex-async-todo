@@ -20,74 +20,49 @@ const getters = {
 const actions = {
   async fetchTodos({ commit }) {
     try {
-      const responseData = await fetch(
+      const response = await axios.get(
         'https://jsonplaceholder.typicode.com/todos'
       )
-      if (!responseData.ok) throw Error(responseData.statusText)
-      const response = await responseData.json()
-      commit('setTodos', response)
+      commit('setTodos', response.data)
     } catch (err) {
       throw Error(err)
     }
   },
   async addTodo({ commit }, title) {
     try {
-      const responseData = await fetch(
+      const response = await axios.post(
         'https://jsonplaceholder.typicode.com/todos',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ title, completed: false })
-        }
+        { title, completed: false }
       )
-      if (!responseData.ok) throw Error(responseData.statusText)
-      const response = await responseData.json()
 
-      commit('newTodo', response)
+      commit('newTodo', response.data)
     } catch (err) {
       throw Error(err)
     }
   },
   async deleteTodo({ commit }, id) {
     try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/todos/${id}`,
-        {
-          method: 'DELETE'
-        }
-      )
-      if (!response.ok) throw Error(response.statusText)
+      await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
       commit('removeTodo', id)
     } catch (err) {
       throw Error(err)
     }
   },
   async filterTodos({ commit }, count) {
-    const responseData = await fetch(
+    const response = await axios.get(
       `https://jsonplaceholder.typicode.com/todos?_limit=${count}`
     )
-    if (!responseData.ok) throw Error(response.statusText)
-    const response = await responseData.json()
 
-    commit('setTodos', response)
+    commit('setTodos', response.data)
   },
   async updateTodo({ commit }, updTodo) {
     try {
-      const responseData = await fetch(
+      const response = await axios.put(
         `https://jsonplaceholder.typicode.com/todos/${updTodo.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Contents-Type': 'application/json'
-          },
-          body: JSON.stringify(updTodo)
-        }
+        updTodo
       )
-      if (!responseData.ok) throw Error(responseData.statusText)
 
-      commit('updateTodo', updTodo)
+      commit('updateTodo', response.data)
     } catch (err) {
       throw Error(err)
     }
