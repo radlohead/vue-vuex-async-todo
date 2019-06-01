@@ -25,6 +25,7 @@ const actions = {
       )
       if (!responseData.ok) throw Error(responseData.statusText)
       const response = await responseData.json()
+
       commit('setTodos', response)
     } catch (err) {
       throw Error(err)
@@ -44,7 +45,22 @@ const actions = {
       )
       if (!responseData.ok) throw Error(responseData.statusText)
       const response = await responseData.json()
+
       commit('newTodo', response)
+    } catch (err) {
+      throw Error(err)
+    }
+  },
+  async deleteTodo({ commit }, id) {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${id}`,
+        {
+          method: 'DELETE'
+        }
+      )
+      if (!response.ok) throw Error(response.statusText)
+      commit('removeTodo', id)
     } catch (err) {
       throw Error(err)
     }
@@ -53,7 +69,9 @@ const actions = {
 
 const mutations = {
   setTodos: (state, todos) => (state.todos = todos),
-  newTodo: (state, todo) => state.todos.unshift(todo)
+  newTodo: (state, todo) => state.todos.unshift(todo),
+  removeTodo: (state, id) =>
+    (state.todos = state.todos.filter(todo => todo.id !== id))
 }
 
 export default {

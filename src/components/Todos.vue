@@ -2,7 +2,10 @@
   <section class="todos__wrapper">
     <AddTodo/>
     <ul class="todos">
-      <li class="todo" v-for="todo in allTodos" :key="todo.id">{{ todo.title }}</li>
+      <li class="todo" v-for="todo in allTodos" :key="todo.id">
+        {{ todo.title }}
+        <i class="fas fa-trash-alt" @click="onDeleteTodo(todo.id)"></i>
+      </li>
     </ul>
   </section>
 </template>
@@ -20,7 +23,10 @@ export default {
     this.fetchTodos();
   },
   methods: {
-    ...mapActions(["fetchTodos"])
+    ...mapActions(["fetchTodos", "deleteTodo"]),
+    onDeleteTodo(id) {
+      this.deleteTodo(id);
+    }
   },
   computed: {
     ...mapGetters(["allTodos"])
