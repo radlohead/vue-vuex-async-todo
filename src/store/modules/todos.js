@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const state = {
   todos: [
     {
@@ -27,11 +29,26 @@ const actions = {
     } catch (err) {
       throw Error(err)
     }
+  },
+  async addTodo({ commit }, title) {
+    const responseData = await fetch(
+      'https://jsonplaceholder.typicode.com/todos',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title, completed: false })
+      }
+    )
+    const response = await responseData.json()
+    commit('newTodo', response)
   }
 }
 
 const mutations = {
-  setTodos: (state, todos) => (state.todos = todos)
+  setTodos: (state, todos) => (state.todos = todos),
+  newTodo: (state, todo) => state.todos.unshift(todo)
 }
 
 export default {

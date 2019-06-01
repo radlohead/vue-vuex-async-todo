@@ -1,5 +1,6 @@
 <template>
   <section class="todos__wrapper">
+    <AddTodo/>
     <ul class="todos">
       <li class="todo" v-for="todo in allTodos" :key="todo.id">{{ todo.title }}</li>
     </ul>
@@ -8,9 +9,13 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import AddTodo from "./AddTodo.vue";
 
 export default {
   name: "Todos",
+  components: {
+    AddTodo
+  },
   created() {
     this.fetchTodos();
   },
