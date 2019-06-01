@@ -1,5 +1,6 @@
 <template>
   <section class="todos__wrapper">
+    <FilterTodos/>
     <AddTodo/>
     <ul class="todos">
       <li class="todo" v-for="todo in allTodos" :key="todo.id">
@@ -13,11 +14,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import AddTodo from "./AddTodo.vue";
+import FilterTodos from "./FilterTodos.vue";
 
 export default {
   name: "Todos",
   components: {
-    AddTodo
+    AddTodo,
+    FilterTodos
   },
   created() {
     this.fetchTodos();

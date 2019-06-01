@@ -64,6 +64,14 @@ const actions = {
     } catch (err) {
       throw Error(err)
     }
+  },
+  async filterTodos({ commit }, count) {
+    const responseData = await fetch(
+      `https://jsonplaceholder.typicode.com/todos?_limit=${count}`
+    )
+    if (!responseData.ok) throw Error(response.statusText)
+    const response = await responseData.json()
+    commit('setTodos', response)
   }
 }
 
