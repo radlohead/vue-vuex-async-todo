@@ -31,18 +31,23 @@ const actions = {
     }
   },
   async addTodo({ commit }, title) {
-    const responseData = await fetch(
-      'https://jsonplaceholder.typicode.com/todos',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title, completed: false })
-      }
-    )
-    const response = await responseData.json()
-    commit('newTodo', response)
+    try {
+      const responseData = await fetch(
+        'https://jsonplaceholder.typicode.com/todos',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ title, completed: false })
+        }
+      )
+      if (!responseData.ok) throw Error(responseData.statusText)
+      const response = await responseData.json()
+      commit('newTodo', response)
+    } catch (err) {
+      throw Error(err)
+    }
   }
 }
 
