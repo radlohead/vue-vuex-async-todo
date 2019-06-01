@@ -1,16 +1,22 @@
 <template>
   <section class="todos__wrapper">
-    <ul class="todos" v-for="todo in allTodos" :key="todo.id">
-      <li class="todo">{{ todo.title }}</li>
+    <ul class="todos">
+      <li class="todo" v-for="todo in allTodos" :key="todo.id">{{ todo.title }}</li>
     </ul>
   </section>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Todos",
+  created() {
+    this.fetchTodos();
+  },
+  methods: {
+    ...mapActions(["fetchTodos"])
+  },
   computed: {
     ...mapGetters(["allTodos"])
   }

@@ -22,4 +22,9 @@ body {
   overflow: auto;
   padding: 0 2rem;
 }
+ul,
+ol,
+li {
+  list-style: none;
+}
 </style>
