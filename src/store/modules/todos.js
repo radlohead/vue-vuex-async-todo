@@ -25,7 +25,6 @@ const actions = {
       )
       if (!responseData.ok) throw Error(responseData.statusText)
       const response = await responseData.json()
-
       commit('setTodos', response)
     } catch (err) {
       throw Error(err)
@@ -71,7 +70,27 @@ const actions = {
     )
     if (!responseData.ok) throw Error(response.statusText)
     const response = await responseData.json()
+
     commit('setTodos', response)
+  },
+  async updateTodo({ commit }, updTodo) {
+    try {
+      const responseData = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${updTodo.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Contents-Type': 'application/json'
+          },
+          body: JSON.stringify(updTodo)
+        }
+      )
+      if (!responseData.ok) throw Error(responseData.statusText)
+
+      commit('updateTodo', updTodo)
+    } catch (err) {
+      throw Error(err)
+    }
   }
 }
 
@@ -79,7 +98,11 @@ const mutations = {
   setTodos: (state, todos) => (state.todos = todos),
   newTodo: (state, todo) => state.todos.unshift(todo),
   removeTodo: (state, id) =>
-    (state.todos = state.todos.filter(todo => todo.id !== id))
+    (state.todos = state.todos.filter(todo => todo.id !== id)),
+  updateTodo: (state, updTodo) => {
+    const index = state.todos.findIndex(todo => todo.id === updTodo.id)
+    if (index !== -1) state.todos.splice(index, 1, updTodo)
+  }
 }
 
 export default {

@@ -3,9 +3,15 @@
     <FilterTodos/>
     <AddTodo/>
     <ul class="todos">
-      <li class="todo" v-for="todo in allTodos" :key="todo.id">
+      <li
+        class="todo"
+        v-bind:class="{'is-complete':todo.completed}"
+        @dblclick="onDblClick(todo)"
+        v-for="todo in allTodos"
+        :key="todo.id"
+      >
         {{ todo.title }}
-        <i class="fas fa-trash-alt" @click="onDeleteTodo(todo.id)"></i>
+        <i class="fas fa-trash-alt" @click="deleteTodo(todo.id)"></i>
       </li>
     </ul>
   </section>
@@ -26,9 +32,15 @@ export default {
     this.fetchTodos();
   },
   methods: {
-    ...mapActions(["fetchTodos", "deleteTodo"]),
-    onDeleteTodo(id) {
-      this.deleteTodo(id);
+    ...mapActions(["fetchTodos", "deleteTodo", "updateTodo"]),
+    onDblClick(todo) {
+      const updTodo = {
+        id: todo.id,
+        title: todo.title,
+        completed: !todo.completed
+      };
+
+      this.updateTodo(updTodo);
     }
   },
   computed: {
@@ -51,5 +63,33 @@ export default {
   text-align: center;
   position: relative;
   cursor: pointer;
+}
+i {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+.legend {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+.complete-box {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #35495e;
+}
+.incomplete-box {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: #41b883;
+}
+.is-complete {
+  background: #35495e;
+  color: #fff;
 }
 </style>
